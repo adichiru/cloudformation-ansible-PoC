@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: EC2 instance for CSA work sample as part of the interview process.
+Description: EC2 instance for cloudformation-ansible-PoC project.
 Parameters:
   InstanceType:
     Description: WebServer EC2 instance.
