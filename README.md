@@ -1,6 +1,6 @@
-# cloudformation-sample
-Requirements:
+# AWS CloudFormation and Ansible Proof of Concept
 
+Requirements:
 1. Launch a t2.micro EC2 instance with Linux on it.
 2. Use a key pair that exists.
 3. Attach a Security Group to it to allow access to SSH and HTTP services running on the EC2 instance.
