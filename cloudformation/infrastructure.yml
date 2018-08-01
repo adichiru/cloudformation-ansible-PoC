@@ -29,13 +29,6 @@ Mappings:
 Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
-    Metadata:
-      Comment1: Configure the bootstrap helpers to install the Apache Web Server and PHP
-    AWS::CloudFormation::Init:
-      config:
-        packages:
-          yum:
-          - httpd
     Properties:
       UserData:
         Fn::Base64:
