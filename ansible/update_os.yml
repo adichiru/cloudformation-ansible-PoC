@@ -1,0 +1,11 @@
+---
+- name: Update the OS
+  hosts: localhost
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: Update all packages
+      yum:
+        name: "*"
+        state: latest
