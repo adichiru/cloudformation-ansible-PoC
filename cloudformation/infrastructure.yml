@@ -15,10 +15,6 @@ Parameters:
     Description: The IP address range that can be used to SSH to the EC2 instance.
     Type: String
     Default: 0.0.0.0/0
-  HTTPLocation:
-    Description: The IP address range that will have access to HTTP service on the EC2 instance.
-    Type: String
-    Default: 0.0.0.0/0
 Mappings:
   AWSInstanceType2Arch:
     t2.micro:
@@ -63,8 +59,7 @@ Resources:
       - IpProtocol: tcp
         FromPort: '80'
         ToPort: '80'
-        CidrIp:
-          Ref: HTTPLocation
+        CidrIp: 0.0.0.0/0
   EIPAddress:
     Type: AWS::EC2::EIP
   EIPAssoc:
@@ -74,7 +69,7 @@ Resources:
         Ref: EC2Instance
       EIP:
         Ref: EIPAddress
-  NewVolume:
+  WebDocRootVolume:
     Type: AWS::EC2::Volume
     Properties:
       Size: 1
@@ -83,8 +78,8 @@ Resources:
     Type: AWS::EC2::VolumeAttachment
     Properties:
       InstanceId: !Ref EC2Instance
-      VolumeId: !Ref NewVolume
-      Device: /dev/sdh
+      VolumeId: !Ref WebDocRootVolume
+      Device: /dev/xvdh
 Outputs:
   InstanceId:
     Description: InstanceId of this EC2 instance.
