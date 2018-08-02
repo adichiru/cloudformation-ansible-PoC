@@ -1,0 +1,30 @@
+---
+- name: Install and make Apache2 available
+  hosts: localhost
+  become: yes
+  become_user: root
+  become_method: sudo
+  gather_facts: true
+  tasks:
+    - name: Install Apache2 (httpd)
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start the httpd service and enable it at boot time too.
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Configure firewall to have port tcp/80 open
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+
+    - name: Restart the firewalld service
+      service:
+        name: firewalld
+        state: restarted
+
