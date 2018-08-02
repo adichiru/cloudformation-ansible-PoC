@@ -1,0 +1,43 @@
+---
+- name: Configure the attached EBS volume
+  hosts: localhost
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: Test for partition on the EBS volume (xvdh).
+      shell: file -s /dev/sdb | awk '{print $2}'
+      register: partition_exists
+
+    #- name: debugging
+    #  debug:
+    #    var: partition_exists.stdout_lines
+
+    - name: Create partition on the attached EBS volume (xvdh).
+      parted:
+        device: /dev/sdb
+        number: 1
+        part_start: 0%
+        part_end: 100%
+        state: present
+      when: partition_exists.stdout_lines != "data"
+
+    - name: Test for filesystem on the partition
+      shell: file -s /dev/sdb1 | awk '{print $5}'
+      register: fs_exists
+
+    - name: Create an ext4 filesystem on the EBS volume partition.
+      filesystem:
+        fstype: ext4
+        dev: /dev/sdb1
+      when: fs_exists.stdout_lines != "ext4"
+
+    - name: Mount the new partition as Web Document Root for Apache
+      mount:
+        path: /mnt/var/www/html/
+        src: /dev/sdb1
+        fstype: ext4
+        opts: defaults,nofail
+        dump: 0
+        passno: 2
+        state: mounted
