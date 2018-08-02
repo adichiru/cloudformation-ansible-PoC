@@ -1,0 +1,31 @@
+---
+- name: Deploy our website
+  hosts: localhost
+  become: no
+  tasks:
+    - name: Clone the github repo
+      git:
+        repo: https://github.com/adichiru/cloudformation-ansible-PoC.git
+        version: master
+        dest: /tmp/remove-me/
+
+    - name: Check if the index.html file exists
+      stat:
+        path: /tmp/remove-me/website/index.html
+      register: stat_result
+
+    - name: Copy the index.html file to the Document Root
+      copy:
+        src: /tmp/remove-me/website/index.html
+        dest: /mnt/var/www/html/
+      when: stat_result.stat.exists == True
+
+    - name: Setting up ownership and permissions
+      become: yes
+      become_user: root
+      become_method: sudo
+      file:
+        path: /mnt/var/www/html/index.html
+        owner: apache
+        group: apache
+        mode: 0640
