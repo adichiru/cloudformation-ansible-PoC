@@ -4,7 +4,7 @@ Requirements:
 Automatically create a minimum size infrastructure and deploy a sample webserver/website on it. Follow the below instructions.
 
 CloudFormation takes care of building the infrastructure in AWS:
-1. Launch a t2.micro EC2 instance with Linux on it.
+1. Launch a t2.micro EC2 instance with Amazon Linux on it.
 2. Use a key pair that exists.
 3. Attach a Security Group to it to allow access to SSH and HTTP services running on the EC2 instance.
 4. Create an EIP.
@@ -19,12 +19,7 @@ Ansible takes care of configuration of the services/software:
 Use Ansible to:
 - update the OS
 - install httpd (or whatever apache2 package is available for that linux distro)
-- configure systemd to starts apache automatically at boot time
-- configure apache to have the Documnent Root on the EBS volume
-- deploy website/index.html file in the DocumentRoot
-
-Questions to work on:
-1. Where do we make sure the EBS volume has a proper partition table and filesystem on it?
-2. Where do we make sure the EBS volume is mounted at boot time, BEFORE starting apache?
-
-
+- configure the apache service to automatically start at boot time
+- configure the attached EBS volume (partition table, filesystem, mount)
+- mount the EBS volume in the Document Root of Apache2
+- deploy website/index.html file in the Document Root (basically, on the EBS volume)
