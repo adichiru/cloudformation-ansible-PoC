@@ -12,7 +12,7 @@ CloudFormation takes care of building the infrastructure in AWS:
 6. Create an 1GB EBS volume.
 7. Mount the EBS volume on the EBS instance.
 
-Ansible takes care of configuration of the services/software:
+Ansible takes care of configuring the services/software:
 1. Setup Ansible with the above Instance in the inventory
 2. Configure it with the SSH key to have access to the linux OS
 
